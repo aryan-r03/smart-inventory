@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 220 30% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 8%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 92%;
+    --secondary-foreground: 220 30% 8%;
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 10% 50%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 221 83% 53%;
+    --radius: 0.75rem;
+
+    --font-syne: 'Syne', sans-serif;
+    --sidebar-width: 260px;
+  }
+
+  .dark {
+    --background: 220 30% 6%;
+    --foreground: 220 20% 95%;
+    --card: 220 25% 10%;
+    --card-foreground: 220 20% 95%;
+    --popover: 220 25% 10%;
+    --popover-foreground: 220 20% 95%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 220 30% 6%;
+    --secondary: 220 20% 16%;
+    --secondary-foreground: 220 20% 85%;
+    --muted: 220 20% 14%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 262 83% 65%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-syne), sans-serif;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-muted; }
+::-webkit-scrollbar-thumb { @apply bg-muted-foreground/30 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-muted-foreground/50; }
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  transition: width 0.3s ease;
+}
+.sidebar.collapsed { width: 72px; }
+
+/* Status badges */
+.badge-critical { @apply bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400; }
+.badge-warning  { @apply bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400; }
+.badge-good     { @apply bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400; }
+.badge-info     { @apply bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400; }
+
+/* Skeleton loader */
+.skeleton {
+  @apply animate-pulse rounded-md bg-muted;
+}
+
+/* Chart tooltip */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  @apply !bg-card !border-border !rounded-lg !shadow-lg;
+}
