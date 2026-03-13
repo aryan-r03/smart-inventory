@@ -4,7 +4,9 @@ import base64
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from app.models.models import InventoryItem, ItemCategory
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from fastapi.responses import Response
+from app.db.session import get_db
 
 router = APIRouter()
 
@@ -36,7 +38,6 @@ async def generate_sku(item_name: str, category: ItemCategory, db: AsyncSession)
     prefix = prefix_map.get(str(category), "XX")
     name_code = "".join(c.upper() for c in item_name if c.isalpha())[:4].ljust(4, "X")
 
-    # Find next sequence
     count = (await db.execute(
         select(func.count()).where(InventoryItem.sku.like(f"{prefix}-{name_code}-%"))
     )).scalar() or 0
@@ -45,14 +46,16 @@ async def generate_sku(item_name: str, category: ItemCategory, db: AsyncSession)
 
 
 @router.get("/item/{item_id}")
-async def get_item_qr(item_id: str, db: AsyncSession = None):
+async def get_item_qr(
+    item_id: str,
+    db: AsyncSession = Depends(get_db)
+):
     """Return QR code image for an item."""
-    from app.db.session import get_db
-    from fastapi import Depends
-    from fastapi.responses import Response
-
-    result = await db.execute(select(InventoryItem).where(InventoryItem.id == item_id))
+    result = await db.execute(
+        select(InventoryItem).where(InventoryItem.id == item_id)
+    )
     item = result.scalar_one_or_none()
+
     if not item or not item.qr_code:
         return {"error": "QR not found"}
 
