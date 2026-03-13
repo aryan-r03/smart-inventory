@@ -167,8 +167,8 @@ class Alert(Base):
     alert_type = Column(Enum(AlertType), nullable=False)
     status = Column(Enum(AlertStatus), default=AlertStatus.active)
     message = Column(Text, nullable=False)
-    severity = Column(String, default="medium")  # low, medium, high, critical
-    metadata = Column(JSON, default=dict)  # extra context
+    severity = Column(String, default="medium")
+    alert_metadata = Column(JSON, default=dict)   # FIXED
     created_at = Column(DateTime, default=datetime.utcnow)
     resolved_at = Column(DateTime, nullable=True)
 
